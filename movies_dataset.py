@@ -74,17 +74,6 @@ class MoviesDatasetAnalyzer:
         top_movies['collection_name'] = top_movies['belongs_to_collection'].apply(self.extract_collection_name)
         return top_movies[['title', 'collection_name', 'weighted_rating']]
 
-    def get_top_movies_by_bayesian_rating(self):
-        """Returns the top movies ranked by the Bayesian average rating."""
-        # Assuming the columns are named "one", "two", ... "ten" for the ratings
-        print(self.df.columns)
-
-        self.df['bar_score'] = self.df.apply(lambda x: self.bayesian_average_rating(
-            x[["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]]), axis=1)
-        top_movies = self.df.sort_values('bar_score', ascending=False).head(5)
-        top_movies['collection_name'] = top_movies['belongs_to_collection'].apply(self.extract_collection_name)
-        return top_movies[['title', 'collection_name', 'bar_score']]
-
     def save_data(self, filename):
         """Saves the dataset to a JSON file."""
         self.df.to_json(filename, date_format='iso')  # added date_format to handle datetime objects
